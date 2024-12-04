@@ -103,3 +103,23 @@ export const saidaEstoque = async (req, res) => {
  
 
 
+export const excluirProduto = async (req, res) =>  {
+
+  try{
+    const {produtoId} = req.body
+    console.log(produtoId)
+  
+     await Produto.destroy({
+      where:{id : produtoId}
+    })
+     
+      console.log("Produto excluido")
+      res.redirect('estoque')
+
+  }catch(error){
+    console.log(error)
+
+  }
+ 
+
+}
