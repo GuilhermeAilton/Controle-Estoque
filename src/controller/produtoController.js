@@ -52,7 +52,8 @@ export const buscarTodosProdutos = async (req, res) => {
 
     // Verificar se há produtos
     if (produtos.length === 0) {
-      return res.status(404).render('estoque', { mensagem: 'Nenhum produto encontrado.' });
+      console.log(produtos)
+      return res.status(404).render('estoque', { produtos:produtos });
     }
 
     // Renderizar a view 'produtos' passando os produtos como dados
