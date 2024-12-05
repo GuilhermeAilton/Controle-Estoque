@@ -113,6 +113,9 @@ export const excluirProduto = async (req, res) =>  {
       where:{id : produtoId}
     })
      
+    // Resetando o AUTO_INCREMENT
+    await Produto.sequelize.query('ALTER TABLE produtos AUTO_INCREMENT = 1');
+
       console.log("Produto excluido")
       res.redirect('estoque')
 
@@ -122,4 +125,57 @@ export const excluirProduto = async (req, res) =>  {
   }
  
 
+}
+
+
+export const editarProduto = async (req, res) =>  {
+
+  try{
+    const {produtoId} = req.body
+    console.log(produtoId)
+  
+    const produto =  await Produto.findOne({
+      where:{id : produtoId}
+    })
+     
+      console.log("Produto", produto)
+      res.render('editarProduto',{produto:produto})
+
+  }catch(error){
+    console.log(error)
+
+  }
+} 
+
+
+export const alterarProduto = async (req, res) =>  {
+  try {
+    const { id, nomeProduto, quantidade, preco, categoria } = req.body;
+
+    // Encontrando o produto no banco de dados pelo id
+    const produto = await Produto.findByPk(id);
+
+    // Se o produto não for encontrado, retornar erro
+    if (!produto) {
+      return res.status(404).send("Produto não encontrado.");
+    }
+
+    // Atualizando os campos do produto
+    produto.nomeProduto = nomeProduto;
+    produto.quantidade = quantidade;
+    produto.preco = preco;
+    produto.categoria = categoria;
+
+    // Salvando as mudanças no banco de dados
+    await produto.save();
+
+    console.log("Produto atualizado:", produto);
+    
+    // Renderizando a página de edição com os dados atualizados
+    res.redirect('estoque');
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Erro ao atualizar o produto.");
+  }
 }

@@ -86,7 +86,11 @@
                     </td>
                     <td>
                       <div class="d-flex gap-2">
-                        <button class="btn btn-warning">Editar</button>
+                        <form action="/editar" method="post">
+                          <input type="hidden" name="produtoId" value="<%= produto.id %>">
+                          <button class="btn btn-warning">Editar</button>
+                        </form>
+
                         <form action="/deletar" method="post">
                           <input type="hidden" name="produtoId" value="<%= produto.id %>">
                           <button class="btn btn-danger">Excluir</button>
